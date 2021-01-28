@@ -1,11 +1,5 @@
 void move() {
   
-  pushMatrix();
-  translate(focusx, focusy, focusz);
-  stroke(255, 0, 0);
-  sphere(0.5);
-  popMatrix();
-  
   if(akey && canMoveLeft()) {
     eyex -= cos(leftRightAngle + PI/2)*10;
     eyez -= sin(leftRightAngle + PI/2)*10;

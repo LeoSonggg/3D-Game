@@ -11,7 +11,7 @@ class Particle extends GameObject{
     float vx = random(-0.5, 0.5);
     float vy;
     if(floor == 0) 
-      vy = random(0, 0.75);
+      vy = random(0, -0.75);
     else if (floor == 1) 
       vy = random(-0.5, 0.5);
     else 
@@ -29,14 +29,14 @@ class Particle extends GameObject{
     lives--;
   }
   
-  void show() {
-    
-    pushMatrix();
-    translate(loc.x, loc.y, loc.z);
-    fill(white, lives/600*255);
-    strokeWeight(1);
-    stroke(100, lives/600*255);
-    box(size);
-    popMatrix();
+  void show() 
+    {
+   world.pushMatrix();
+   world.translate(loc.x, loc.y, loc.z);
+   world.fill(white, lives/600*255);
+   world.strokeWeight(1);
+   world.stroke(100, lives/600*255);
+   world.box(size);
+   world.popMatrix();
   }
 }

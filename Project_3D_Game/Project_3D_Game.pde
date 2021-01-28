@@ -30,16 +30,26 @@ float upDownAngle;
 //Game Object
 ArrayList<GameObject> objects;
 
+//canvases
+PGraphics world;
+PGraphics HUD;
+
 //Bullet cool down between each shot
 int time = 0;
 
 void setup() {
+  //create canvases
+  world = createGraphics(width, height, P3D);
+  HUD = createGraphics(width, height, P2D);
+  
   //create game object list
   objects = new ArrayList<GameObject>();
+  
   //load texture
   mossyStone = loadImage("Mossy_Stone_Bricks.png");
   oakPlanks = loadImage("Oak_Planks.png");
-  textureMode(NORMAL);
+  world.textureMode(NORMAL);
+  
   //noCursor();
   try {
     rbt = new Robot(); 
@@ -47,7 +57,7 @@ void setup() {
   catch(Exception e) {
     e.printStackTrace();  
   }
-  size(displayWidth, displayHeight, P3D); 
+  size(displayWidth, displayHeight, P2D); 
   
   eyex = width/2;
   eyey = 9*height/11;
@@ -66,17 +76,19 @@ void setup() {
 }
 
 void draw() {
-  background(0);
+  world.beginDraw();
+  world.textureMode(NORMAL);
+  world.background(#99ccff);
   
-  pointLight(255, 255, 255, eyex, eyey, eyez);
-  
-  camera(eyex, eyey, eyez, focusx, focusy, focusz, upx, upy, upz);
+  //world.pointLight(255, 255, 255, eyex, eyey, eyez);
+  world.camera(eyex, eyey, eyez, focusx, focusy, focusz, upx, upy, upz);
   
   move();
-  drawAxis();
-  drawFloor(-2000, 2000, height, gridSize);               //floor
-  drawFloor(-2000, 2000, height - gridSize*4, gridSize);  //ceiling
+  drawSnowFloor(-2000, 2000, height, gridSize);  //floor
   drawMap();
+  
+  for(int i = 0; i < 3; i++) 
+    objects.add(new Snow());  
   
   int i = 0;
   while(i < objects.size()) {
@@ -89,4 +101,13 @@ void draw() {
       i++; 
     }
   }
+  world.endDraw();
+  image(world, 0, 0);
+  
+  HUD.beginDraw();
+  HUD.clear();
+  drawCrosshair();
+  drawMinimap();
+  HUD.endDraw();
+  image(HUD, 0, 0);
 }
