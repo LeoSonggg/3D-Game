@@ -73,6 +73,8 @@ void setup() {
   
   map = loadImage("map.png");
   gridSize = 100;
+  
+  objects.add(new SnowMan());
 }
 
 void draw() {

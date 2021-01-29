@@ -15,7 +15,7 @@ class Bullet extends GameObject {
   void act() {
     int hitx = int(loc.x + 2000) / gridSize;
     int hity = int(loc.z + 2000) / gridSize;
-    if(loc.y >= height - gridSize*3 + 20) {
+    if(loc.y >= height - gridSize*2.3 + 20) {
       if(map.get(hitx, hity) == white) {
         loc.add(dir);  
       } else {
