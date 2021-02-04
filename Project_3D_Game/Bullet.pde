@@ -1,6 +1,7 @@
 class Bullet extends GameObject {
   PVector dir;
   float speed;
+  float gravity;
   
   Bullet() {
     super(eyex, eyey, eyez, 10);
@@ -10,6 +11,18 @@ class Bullet extends GameObject {
     float vz = sin(leftRightAngle);
     dir = new PVector(vx, vy, vz);
     dir.setMag(speed);
+    gravity = 0.2;
+  }
+  
+  Bullet(float X, float Y, float Z, float VX, float VY, float VZ) {
+    super(X, Y, Z, 10);
+    speed = 25;
+    float vx = VX;
+    float vy = VY;
+    float vz = VZ;
+    dir = new PVector(vx, vy, vz);
+    dir.setMag(speed);
+    gravity = 0.1;
   }
   
   void act() {
@@ -24,7 +37,7 @@ class Bullet extends GameObject {
           objects.add(new Particle(loc, 1));
         }
       }
-      if(loc.y >= height - 20) {
+      if(loc.y >= height - 60) {
         lives = 0;
         for(int i = 0; i < 15; i++) {
           objects.add(new Particle(loc, 2));
@@ -34,6 +47,6 @@ class Bullet extends GameObject {
     else
     loc.add(dir); 
     
-    dir.y += 0.2;
+    dir.y += gravity;
   }
 }

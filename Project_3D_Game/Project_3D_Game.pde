@@ -1,5 +1,17 @@
 import java.awt.Robot;
 
+int mode;
+final int INTRO = 1;
+final int GAME = 2;
+final int PAUSE = 3;
+final int GAMEOVER = 4;
+
+int hitpoint;
+
+float alphaIntro = 255; //transparency
+float alphaRateIntro = 1.59375; //Rate of change for transparency
+int alphaCountIntro = 0; //Count number of time transparency has changed
+ 
 //color pallette
 color black = #000000;  //oak planks
 color white = #FFFFFF;  //empty space
@@ -38,6 +50,8 @@ PGraphics HUD;
 int time = 0;
 
 void setup() {
+  hitpoint = 10;
+  mode = GAME;
   //create canvases
   world = createGraphics(width, height, P3D);
   HUD = createGraphics(width, height, P2D);
@@ -74,42 +88,19 @@ void setup() {
   map = loadImage("map.png");
   gridSize = 100;
   
-  objects.add(new SnowMan());
-}
+  objects.add(new SnowMan(1.5));
 
+}
 void draw() {
-  world.beginDraw();
-  world.textureMode(NORMAL);
-  world.background(#99ccff);
-  
-  //world.pointLight(255, 255, 255, eyex, eyey, eyez);
-  world.camera(eyex, eyey, eyez, focusx, focusy, focusz, upx, upy, upz);
-  
-  move();
-  drawSnowFloor(-2000, 2000, height, gridSize);  //floor
-  drawMap();
-  
-  for(int i = 0; i < 3; i++) 
-    objects.add(new Snow());  
-  
-  int i = 0;
-  while(i < objects.size()) {
-    GameObject obj = objects.get(i);
-    obj.act();
-    obj.show();
-    if(obj.lives == 0) {
-      objects.remove(i);
-    } else {
-      i++; 
-    }
+  if(mode == INTRO) {
+    intro();
+  } else if (mode == GAME) {
+    game();
+  } else if (mode == PAUSE) {
+    pause();
+  } else if (mode == GAMEOVER) {
+    gameover();
+  } else {
+      println("ERROR! Mode is:" + mode); 
   }
-  world.endDraw();
-  image(world, 0, 0);
-  
-  HUD.beginDraw();
-  HUD.clear();
-  drawCrosshair();
-  drawMinimap();
-  HUD.endDraw();
-  image(HUD, 0, 0);
 }
